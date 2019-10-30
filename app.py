@@ -1,9 +1,14 @@
 from flask import Flask, request
 
+from aws_xray_sdk.core import xray_recorder
+from aws_xray_sdk.ext.flask.middleware import XRayMiddleware
+
 from datadog_lambda.wrapper import datadog_lambda_wrapper
 from datadog_lambda.metric import lambda_metric
 
 app = Flask(__name__)
+xray_recorder.configure(service='reverser')
+XRayMiddleware(app, xray_recorder)
 
 @datadog_lambda_wrapper
 @app.route('/', methods=['POST', 'GET'])
