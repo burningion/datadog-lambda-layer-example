@@ -1,17 +1,16 @@
-from chalice import Chalice
+from flask import Flask, request
 
 from datadog_lambda.wrapper import datadog_lambda_wrapper
 from datadog_lambda.metric import lambda_metric
 
-app = Chalice(app_name='swapcaser')
+app = Flask(__name__)
 
 @datadog_lambda_wrapper
 @app.route('/', methods=['POST', 'GET'])
 def index():
-    request = app.current_request
     if request.method == 'POST':
-        request_string = request.json_body['string'] # expecting {"string": "blahhh"}
-        app.log.info(f"Reverser called with {request_string}")
+        request_string = request.get_json()['string'] # expecting {"string": "blahhh"}
+        app.logger.info(f"Reverser called with {request_string}")
 
         lambda_metric("reverse_service.string_length", # metric
                       len(request_string), # value
@@ -22,3 +21,5 @@ def index():
 
     return {'hello': 'world'}
 
+if __name__ == "__main__":
+    app.run()

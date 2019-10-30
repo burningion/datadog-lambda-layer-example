@@ -1,1 +1,4 @@
 datadog-lambda
+aws-xray-sdk
+zappa
+flask
