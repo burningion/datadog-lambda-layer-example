@@ -2,7 +2,7 @@
 
 This is a (tiny!) example, using the [Datadog lambda layer](https://github.com/DataDog/datadog-lambda-layer-python) for Python.
 
-It uses [Chalice](https://github.com/DataDog/datadog-lambda-layer-python), a Flask like framework built for Serverless apps.
+It uses Flask with [Zappa](https://github.com/Miserlou/Zappa), a serverless framework.
 
 It's cool because you can do things like respond to SNS notifications or schedule things to run at a certain time in code.
 
@@ -14,23 +14,23 @@ Use virtualenv to separate your Serverless app's requirements:
 
 ```bash
 $ pip install virtualenv
-$ virtualenv ~/.virtualenvs/chalice-demo
-$ source ~/.virtualenvs/chalice-demo/bin/activate
+$ virtualenv ~/.virtualenvs/zappa-demo
+$ source ~/.virtualenvs/zappa-demo/bin/activate
 ```
 
 Once that's done, you can then do a:
 
 ```bash
 $ pip install -r requirements.txt
-$ chalice local
+$ zappa init
+$ zappa deploy dev
 ```
-
-(You can specify a different port with `chalice local --port=9001`)
 
 Send an example request to be reversed with `curl`:
 
 ```bash
-$ curl -d '{"string": "Hello!"}' -H "Content-Type: application/json" localhost:8000
+$ curl -d '{"string": "Hello!"}' -H "Content-Type: application/json" <YOUR_ZAPPA_URL>
+{"response":"hELLO!"}
 ```
 
 
