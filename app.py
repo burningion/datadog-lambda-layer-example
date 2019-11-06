@@ -6,7 +6,7 @@ from aws_xray_sdk.ext.flask.middleware import XRayMiddleware
 from datadog_lambda.wrapper import datadog_lambda_wrapper
 from datadog_lambda.metric import lambda_metric
 
-import hashlib, sys, json, hmac, base64, boto3
+import hashlib, sys, json, hmac, base64, boto3, requests
 
 patch_all()
 
@@ -20,6 +20,8 @@ XRayMiddleware(app, xray_recorder)
 def index():
     if request.method == 'POST':
         request_string = request.get_json()['string'] # expecting {"string": "blahhh"}
+        xray_recorder.put_annotation('request_body', repr(request.get_json()))
+
         app.logger.info(f"Reverser called with {request_string}")
 
         lambda_metric("reverse_service.string_length", # metric
