@@ -45,3 +45,7 @@ arn:aws:lambda:us-east-1:464622532012:layer:Datadog-Python36:5
 ```
 
 Replace the `us-east-1` with your proper AWS region.
+
+## Enable Asynchronous Custom Metrics
+
+In addition to your `DD_API_KEY` environment variable set to ship traces, add `DD_FLUSH_TO_LOG` set as `True`, in order to see your metrics with the lowest possible latency.
